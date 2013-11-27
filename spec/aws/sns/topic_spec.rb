@@ -266,17 +266,37 @@ module AWS
 
             it 'should raise ArgumentError if the ARN is not SQS or SNS-like' do
               lambda { topic.subscribe("arn:aws:xxx:foo:bar:baz") }.
-                should raise_error(ArgumentError, "expected a queue ARN")
+                should raise_error(ArgumentError)
             end
 
             it 'should not raise ArgumentError if the ARN is SQS' do
               lambda { topic.subscribe("arn:aws:sqs:foo:bar:baz") }.
-                should_not raise_error(ArgumentError, "expected a queue ARN")
+                should_not raise_error
             end
 
-            it 'should not raise ArgumentError if the ARN is SNS' do
-              lambda { topic.subscribe("arn:aws:sns:foo:bar:baz") }.
-                should_not raise_error(ArgumentError, "expected a queue ARN")
+            it 'should raise ArgumentError if the ARN is not supported push protocol' do
+              lambda { topic.subscribe("arn:aws:sns:us:123:endpoint/XXX/App/123") }.
+                should raise_error(ArgumentError)
+            end
+
+            it 'should not raise ArgumentError if the ARN is SNS APNS_SANDBOX' do
+              lambda { topic.subscribe("arn:aws:sns:us:123:endpoint/APNS_SANDBOX/App/123") }.
+                should_not raise_error
+            end
+
+            it 'should not raise ArgumentError if the ARN is SNS APNS' do
+              lambda { topic.subscribe("arn:aws:sns:us:123:endpoint/APNS/App/123") }.
+                should_not raise_error
+            end
+
+            it 'should not raise ArgumentError if the ARN is SNS GCM' do
+              lambda { topic.subscribe("arn:aws:sns:us:123:endpoint/GCM/App/123") }.
+                should_not raise_error
+            end
+
+            it 'should not raise ArgumentError if the ARN is SNS ADM' do
+              lambda { topic.subscribe("arn:aws:sns:us:123:endpoint/ADM/App/123") }.
+                should_not raise_error
             end
 
           end
