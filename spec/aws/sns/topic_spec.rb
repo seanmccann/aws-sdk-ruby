@@ -264,9 +264,19 @@ module AWS
 
             end
 
-            it 'should raise ArgumentError if the ARN is not SQS-like' do
-              lambda { topic.subscribe("arn:aws:sns:foo:bar:baz") }.
+            it 'should raise ArgumentError if the ARN is not SQS or SNS-like' do
+              lambda { topic.subscribe("arn:aws:xxx:foo:bar:baz") }.
                 should raise_error(ArgumentError, "expected a queue ARN")
+            end
+
+            it 'should not raise ArgumentError if the ARN is SQS' do
+              lambda { topic.subscribe("arn:aws:sqs:foo:bar:baz") }.
+                should_not raise_error(ArgumentError, "expected a queue ARN")
+            end
+
+            it 'should not raise ArgumentError if the ARN is SNS' do
+              lambda { topic.subscribe("arn:aws:sns:foo:bar:baz") }.
+                should_not raise_error(ArgumentError, "expected a queue ARN")
             end
 
           end

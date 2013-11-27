@@ -380,8 +380,8 @@ module AWS
           { :protocol => 'sqs', :endpoint => endpoint.arn }
 
         when endpoint =~ /^arn:/
-          raise ArgumentError, "expected a queue ARN" unless
-            endpoint =~ /^arn:aws:sqs:/
+          raise ArgumentError, "expected a SQS or SNS ARN" unless
+            endpoint =~ /^arn:aws:sqs:|^arn:aws:sns:/
           { :protocol => "sqs", :endpoint => endpoint }
         when endpoint.kind_of?(URI)
           { :protocol => endpoint.scheme,
