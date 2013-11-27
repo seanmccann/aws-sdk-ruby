@@ -531,6 +531,26 @@ module AWS
           topic.publish('message', :sqs => 'sqs msg')
         end
 
+        it 'passes the APNS message along' do
+          should_receive_publish_with('APNS' => 'APNS msg')
+          topic.publish('message', 'APNS' => 'APNS msg')
+        end
+
+        it 'passes the APNS_SANDBOX message along' do
+          should_receive_publish_with('APNS_SANDBOX' => 'APNS_SANDBOX msg')
+          topic.publish('message', 'APNS_SANDBOX' => 'APNS_SANDBOX msg')
+        end
+
+        it 'passes the GCM message along' do
+          should_receive_publish_with('GCM' => 'GCM msg')
+          topic.publish('message', 'GCM' => 'GCM msg')
+        end
+
+        it 'passes the ADM message along' do
+          should_receive_publish_with('ADM' => 'ADM msg')
+          topic.publish('message', 'ADM' => 'ADM msg')
+        end
+
       end
 
       context '#delete' do

@@ -262,9 +262,9 @@ module AWS
 
         message = { :default => default_message }
 
-        [:http, :https, :email, :email_json, :sqs].each do |protocol|
+        [:http, :https, :email, :email_json, :sqs, 'APNS', 'APNS_SANDBOX', 'GCM', 'ADM'].each do |protocol|
           if options[protocol]
-            message[protocol.to_s.gsub(/_/, '-')] = options[protocol]
+            message[format_protocol(protocol)] = options[protocol]
           end
         end
 
@@ -278,6 +278,13 @@ module AWS
 
         response[:message_id]
 
+      end
+
+      # Formats protocols
+      # @return [string] returns formatted protocol
+      def format_protocol(protocol)
+        return protocol.to_s.gsub(/_/, '-') unless protocol == 'APNS_SANDBOX'
+        protocol.to_s
       end
 
       # Deletes the topic.
