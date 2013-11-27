@@ -384,10 +384,9 @@ module AWS
             endpoint =~ /^arn:aws:sqs:|^arn:aws:sns:/
           { :protocol => "sqs", :endpoint => endpoint }
         when endpoint =~ /^arn:aws:sns/
-          protocol = endpoint.split('/')[1]
           raise ArgumentError, "unsupported protocol" unless
-            ['APNS', 'APNS_SANDBOX', 'ADM', 'GCM'].include? protocol
-          { :protocol => protocol, :endpoint => endpoint }
+            ['APNS', 'APNS_SANDBOX', 'ADM', 'GCM'].include? endpoint.split('/')[1]
+          { :protocol => 'application', :endpoint => endpoint }
         when endpoint.kind_of?(URI)
           { :protocol => endpoint.scheme,
             :endpoint => endpoint.to_s }
